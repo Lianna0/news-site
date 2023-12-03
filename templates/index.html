@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<!-- END #fh5co-header -->
+	<div class="container-fluid">
+		<div class="row fh5co-post-entry">
+			<h2 style="text-align: center; margin-bottom: 30px">Categories</h2>
+			{% for category in categories %}
+			<article class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-xxs-12 animate-box">
+				<figure>
+					<a href="{% url 'categories-detail' category.pk category.slug %}"><img src="media/{{category.image}}" alt="Image" class="img-responsive"></a>
+				</figure>
+
+				<h2 class="fh5co-article-title"><a href="single.html">{{ category.title }} </a></h2>
+				<span class="fh5co-meta fh5co-date">{{ category.created_at }} </span>
+			</article>
+			{% endfor %}
+		</div>
+
+		<div class="row fh5co-post-entry">
+			<h2 style="text-align: center; margin-bottom: 30px">News</h2>
+			{% for single_news in news %}
+			<article class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-xxs-12 animate-box">
+				<figure>
+					<a href="{% url 'single-news' single_news.pk single_news.slug %}"><img src="media/{{single_news.image}}" alt="Image" class="img-responsive"></a>
+				</figure>
+				<span class="fh5co-meta"><a href="{% url 'single-news' single_news.pk single_news.slug %}">{{single_news.maincategory.title}}</a></span>
+				<h2 class="fh5co-article-title"><a href="{% url 'single-news' single_news.pk single_news.slug %}">{{single_news.title}}</a></h2>
+				<span class="fh5co-meta fh5co-date">{{single_news.created_at}}</span>
+			</article>
+			{% endfor %}
+		</div>
+
+		<div class="pagination">
+			<span class="step-links">
+				{% if news.has_previous %}
+					<a href="?page=1">&laquo; first</a>
+					<a href="?page={{ news.previous_page_number }}">previous</a>
+				{% endif %}
+
+				<span class="current">
+					Page {{ news.number }} of {{ news.paginator.num_pages }}.
+				</span>
+
+				{% if news.has_next %}
+					<a href="?page={{ news.next_page_number }}">next</a>
+					<a href="?page={{ news.paginator.num_pages }}">last &raquo;</a>
+				{% endif %}
+			</span>
+		</div>
+	</div>
+
+{% endblock %}
